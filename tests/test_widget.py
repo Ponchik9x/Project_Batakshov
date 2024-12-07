@@ -1,6 +1,8 @@
+import typing
+
 import pytest
 
-from src.widget import mask_account_card
+from src.widget import get_date, mask_account_card
 
 
 @pytest.mark.parametrize(
@@ -15,7 +17,10 @@ from src.widget import mask_account_card
     ],
 )
 def test_mask_account_card_write_input(card_name: str, expected: str) -> None:
-    """Тест с параметризацией на правильность работы функции"""
+    """Тест с параметризацией на правильность работы функции
+    :param card_name: str:
+    :param expected: str:
+    """
     assert mask_account_card(card_name) == expected
 
 
@@ -25,12 +30,21 @@ def test_mask_account_card_zero() -> None:
         mask_account_card(card_name="")
 
 
-def test_mask_account_card_number_under_len_card_name() -> None:
-    """Тест на заданную длину счета - ошибка (больше заданной)"""
-    with pytest.raises(ValueError):
-        mask_account_card(card_name="Счет 159683786870519912159848")
-        mask_account_card(card_name="Visa Platinum 89909221136652292222")
-        mask_account_card(card_name="MasterCard 71583007347267583333")
+@pytest.mark.parametrize(
+    "card_name, exception",
+    [
+        ("Счет 159683786870519912159848", pytest.raises(ValueError)),
+        ("Visa Platinum 8990922113665229222", pytest.raises(ValueError)),
+        ("MasterCard 7158300734726758333", pytest.raises(ValueError)),
+    ],
+)
+def test_mask_account_card_number_under_len_card_name(card_name: str, exception: typing.Any) -> None:
+    """Тест на заданную длину счета - ошибка (больше заданной)
+    :param card_name: str
+    :param exception: typing.Any
+    """
+    with exception as e:
+        assert mask_account_card(card_name) == e
 
 
 def test_mask_account_card_number_below_len_card_num() -> None:
@@ -39,3 +53,9 @@ def test_mask_account_card_number_below_len_card_num() -> None:
         mask_account_card(card_name="Счет 15968378687051")
         mask_account_card(card_name="Visa Platinum 899092211366522")
         mask_account_card(card_name="MasterCard 7158300734726758333")
+
+
+def test_get_date_zero() -> None:
+    """Тест на пустой ввод даты - ошибка"""
+    with pytest.raises(ValueError):
+        get_date("")

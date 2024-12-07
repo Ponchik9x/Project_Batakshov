@@ -78,3 +78,87 @@
     {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}]
     ---
 
+# Раздел тестов 
+
+
+## Работа теста для модуля masks
+### FUNCTIONS test_masks
+
+    card_name() -> str
+        Фикстура правильного номера карты
+
+    test_get_mask_account_number_below_len_card_num() -> None
+        Тест на заданную длину счета - ошибка (больше заданной)
+
+    test_get_mask_account_number_zero() -> None
+        Тест на пустой ввод номера счета - ошибка
+
+    test_get_mask_account_write_input(account_number: str, expected: str) -> None
+        Тест с параметрищацией на правильность ввода номера счета
+
+    test_get_mask_card_account_under_len_card_num() -> None
+        Тест на заданную длинну счета - ошибка (мельше заданной)
+
+    test_get_mask_card_number(card_name: str) -> None
+        Тест на првильность работы
+
+    test_get_mask_card_number_below_len_card_num() -> None
+        Тест на длинну ввода - ошибка (больше заданной)
+
+    test_get_mask_card_number_under_len_card_num() -> None
+        Тест на длинну ввода - ошибка (меньше заданной)
+
+    test_get_mask_card_number_zero() -> None
+        Тест на пустой ввод - ошибка
+
+
+## Работа теста для модуля processing
+### FUNCTIONS test_processingq
+
+    not_state_dict() -> list[dict[str, str | int]]
+        Фикстура state_dict без указания параметра state
+
+    state_dict() -> list[dict[str, str | int]]
+        Фикстура параметры state_dict
+
+    test_filter_by_any_state(state_dict: list[dict[str, object]]) -> None
+        Тест на правильность работы значение state=any
+
+    test_filter_by_not_state_(not_state_dict: list[dict[str, object]]) -> None
+        Тест на правильность работы без указания параметра state(с помощью фикстуры)
+
+    test_filter_by_state_canceled(state_dict: list[dict[str, object]]) -> None
+        Тест на правильность работы значение CANCELED
+
+    test_filter_by_state_excluded(state_dict: list[dict[str, object]]) -> None
+        Тест на правильность работы значение EXECUTED
+
+    test_filter_by_state_state_dict_zero_() -> None
+        Тест на пустой список
+
+
+## Работа теста для модуля widget
+### FUNCTIONS test_widget
+
+    test_get_date_invalid() -> None
+        Тест на пустой ввод даты - ошибка
+
+    test_get_date_zero() -> None
+        Тест на пустой ввод даты - ошибка
+
+    test_mask_account_card_number_below_len_card_num() -> None
+        Тест на заданную длинну счета - ошибка (мельше заданной)
+
+    test_mask_account_card_number_under_len_card_name(card_name: str, exception: Any) -> None
+        Тест на заданную длину счета - ошибка (больше заданной)
+        :param card_name: str
+        :param exception: typing.Any
+
+    test_mask_account_card_write_input(card_name: str, expected: str) -> None
+        Тест с параметризацией на правильность работы функции
+        :param card_name: str:
+        :param expected: str:
+
+    test_mask_account_card_zero() -> None
+        Тест на пустой ввод номера счета - ошибка
+
