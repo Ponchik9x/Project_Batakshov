@@ -162,3 +162,5 @@ cython_debug/
 .idea/
 
 exercise.md
+/work_list.txt
+/naim.py

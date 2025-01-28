@@ -1,5 +1,4 @@
 import os
-from typing import Any
 
 import requests
 from dotenv import load_dotenv
@@ -7,13 +6,21 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 
-def getting_converted_currency(currency: str, amount: float | int) -> list[dict[Any, Any] | dict[Any, Any]]:
+def getting_converted_currency(dict_transaction: dict) -> float:
     """Функция запрашивает настоящий курс стоимости валюты
     и конвертирует сумму операции в рубли"""
-    url = f"https://api.apilayer.com/exchangerates_data/latest?symbols=RUB%2CUSD%2CEUR&base={currency}"
+
+    amount = dict_transaction["operationAmount"]["amount"]
+    type_currency = dict_transaction["operationAmount"]["currency"]["code"]
+
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={type_currency}&amount={amount}"
+
+    payload = {}
+
     headers = {"apikey": f'{os.getenv("API_LAYER_KEY")}'}
-    response = requests.request("GET", url, headers=headers)
-    exchange_rates_data = response.json()
-    currencies_in_rubles = exchange_rates_data["rates"]["RUB"]
-    converted_operation = amount * currencies_in_rubles
-    return round(converted_operation, 2)
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    result = response.json()
+
+    return result["result"]  # round(converted_operation, 2)

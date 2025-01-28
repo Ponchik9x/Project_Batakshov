@@ -1,8 +1,16 @@
 import json
-import os
+import logging
+from json import JSONDecodeError
 from typing import Any
 
-from src.external_api import getting_converted_currency
+from external_api import getting_converted_currency
+
+logger = logging.getLogger("utils")
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler("logs/utils.log", mode="w")
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
 
 
 def financial_transactions(gate_to_transaction: str) -> list[dict[Any, Any] | dict[Any, Any]] | list:
@@ -11,14 +19,23 @@ def financial_transactions(gate_to_transaction: str) -> list[dict[Any, Any] | di
     Если файл пустой, содержит не список или не найден,
     функция возвращает пустой список.
     """
-    if os.path.isfile(gate_to_transaction):
+    logger.info(f"Принимаем путь к файлу JSON: {gate_to_transaction}")
+    try:
+        logger.info(f"Открываем файл JSON по адресу: {gate_to_transaction}")
         with open(f"{gate_to_transaction}") as file:
-            content = json.load(file)
-            if len(content) > 0 or tuple(content) == list:
-                return content
-            else:
+
+            try:
+                content = json.load(file)
+                if len(content) > 0 or tuple(content) == list:
+                    logger.info(f"возвращаем список словарей из файла: {gate_to_transaction}")
+                    return content
+
+            except JSONDecodeError as ex:
+                logger.error(f"Файл не формата JSON: {ex}")
                 return []
-    else:
+
+    except FileNotFoundError as ex:
+        logger.error(f"Файл не найден: {ex}")
         return []
 
 
@@ -28,10 +45,19 @@ def transaction_amount_dict(dict_of_transactions: dict) -> list[dict[Any, Any]] 
     сумму транзакции (amount) в рублях, тип данных — float.
     Если сумма транзакции не в рублях, то происходит конвертация в рубли по настоящему курсу
     """
-    amount = dict_of_transactions["operationAmount"]["amount"]
-    type_currency = dict_of_transactions["operationAmount"]["currency"]["code"]
-    if type_currency == "RUB":
-        return amount
-    else:
-        return getting_converted_currency(type_currency, amount)
+    try:
+        logger.info(f"Получение значения суммы из входящего словаря: {dict_of_transactions}")
+        amount = dict_of_transactions["operationAmount"]["amount"]
 
+        logger.info(f"Получение значения валюты из входящего словаря: {dict_of_transactions}")
+        type_currency = dict_of_transactions["operationAmount"]["currency"]["code"]
+
+        if type_currency == "RUB":
+            logger.info(f"Валюта - {type_currency}. Вывод значения")
+            return amount
+        else:
+            logger.info(f"Валюта - {type_currency}. Конвертация суммы в RUB")
+            return getting_converted_currency(dict_of_transactions)
+    except ValueError:
+        logger.error(f"Неверное значения или словарь не существует: {dict_of_transactions}")
+        print("Проверьте входящее значение")
