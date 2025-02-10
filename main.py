@@ -1,7 +1,4 @@
-from numpy import isnan
-
 from src.dict_reader import counter_categories, get_list_description_dict
-
 from src.file_reader import read_file_csv, read_file_exel
 from src.processing import filter_by_state, sort_by_date
 from src.utils import financial_transactions
@@ -18,7 +15,8 @@ print(
 Выберите необходимый пункт меню:
 1. Получить информацию о транзакциях из JSON-файла
 2. Получить информацию о транзакциях из CSV-файла
-3. Получить информацию о транзакциях из XLSX-файла""")
+3. Получить информацию о транзакциях из XLSX-файла"""
+)
 
 type_of_reading = str(input())
 
@@ -29,7 +27,7 @@ while type_of_reading not in type_reading:
     print(f"Введите тип из перечня: {", ".join(type_reading)}")
     type_of_reading = str(input())
 
-user_list_transactions = []
+user_list_transactions: list[dict | dict] = []
 
 #                           ПРАВИЛЬНЫЙ КОД
 
@@ -56,8 +54,10 @@ elif type_of_reading == "3":
     user_list_transactions = read_file_exel(name_of_transactions)
 
 
-print("""Введите статус, по которому необходимо выполнить фильтрацию.
-Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING""")
+print(
+    """Введите статус, по которому необходимо выполнить фильтрацию.
+Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
+)
 
 states = ["EXECUTED", "CANCELED", "PENDING"]
 
@@ -89,7 +89,7 @@ while sorted_by_date not in yes_no_answer:
     sorted_by_date = input().lower()
 
 
-if sorted_by_date == 'да':
+if sorted_by_date == "да":
     print("Отсортировать по возрастанию или по убыванию? ")
     ascending_descending_order = input().lower()
     filter_ascending = ["по возрастанию", "по убыванию"]
@@ -103,7 +103,6 @@ if sorted_by_date == 'да':
         user_list_transactions = sort_by_date(user_list_transactions)
     else:
         user_list_transactions = user_list_transactions
-
 
 
 print("Выводить только рублевые тразакции? Да/Нет")
@@ -157,20 +156,23 @@ print(f"Всего банковских операций в выборке: {res
 
 if len(user_list_transactions):
     for d in user_list_transactions:
-        print(d['id'], d['state'], d['from'])
+        print(d["id"], d["state"], d["from"])
 
-        if type(d['from']) == str:
-            df = str(d['from']).split()
-            print(f"""
+        if type(d["from"]) is str:
+            df = str(d["from"]).split()
+            print(
+                f"""
             {get_date(d['date'])} {d['description']}
             {mask_account_card(d['from'])} -> {mask_account_card(d['to'])}
-            Сумма: {d['amount']} {d['currency_code']}""")
+            Сумма: {d['amount']} {d['currency_code']}"""
+            )
 
         else:
             print(
                 f"""
             {get_date(d['date'])} {d['description']}
             {mask_account_card(d['to'])}
-            Сумма: {d['amount']} {d['currency_code']}""")
+            Сумма: {d['amount']} {d['currency_code']}"""
+            )
 else:
     print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")

@@ -3,8 +3,6 @@ import logging
 from json import JSONDecodeError
 from typing import Any
 
-
-
 logger = logging.getLogger("utils")
 logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler("logs/utils.log", mode="w")
@@ -13,7 +11,7 @@ file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 
 
-def financial_transactions(gate_to_transaction: str) -> list[dict[Any, Any] | dict[Any, Any]] | list:
+def financial_transactions(gate_to_transaction: str) -> list[dict | dict] | list | Any:
     """
     Функция принимает путь к файлу JSON и возвращает список словарей,
     Если файл пустой, содержит не список или не найден,
@@ -29,6 +27,8 @@ def financial_transactions(gate_to_transaction: str) -> list[dict[Any, Any] | di
                 if len(content) > 0 or tuple(content) == list:
                     logger.info(f"возвращаем список словарей из файла: {gate_to_transaction}")
                     return content
+                else:
+                    return []
 
             except JSONDecodeError as ex:
                 logger.error(f"Файл не формата JSON: {ex}")

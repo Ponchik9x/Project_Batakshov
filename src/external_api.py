@@ -38,7 +38,7 @@ def transaction_amount_dict(dict_of_transactions: dict) -> list[dict[Any, Any]] 
 
             url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={type_currency}&amount={amount}"
 
-            payload = {}
+            payload: dict = {}
 
             headers = {"apikey": f'{os.getenv("API_LAYER_KEY")}'}
 

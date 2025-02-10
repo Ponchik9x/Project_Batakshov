@@ -28,5 +28,3 @@ def get_mask_card_number(card_num: str) -> str:
         raise ValueError("неверный номер карты/счета")
 
     return encrypted_value
-
-

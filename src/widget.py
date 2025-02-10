@@ -28,13 +28,13 @@ def get_date(date_: str) -> str:
             date_string = date_in_format.strftime("%d-%m-%Y")
             return date_string
         else:
-            raise ValueError('введите или проверьте дату')
+            raise ValueError("введите или проверьте дату")
     except ValueError:
         raise ValueError("неверный формат даты")
 
 
-def get_lis_of_descriptions(list_transactions: list[dict|dict]) -> list[str]:
-    """ Функция получает лист с транзакциями и выдает лист с перечнем совершенных операций"""
+def get_lis_of_descriptions(list_transactions: list[dict | dict]) -> list[str]:
+    """Функция получает лист с транзакциями и выдает лист с перечнем совершенных операций"""
     list_descriptions = []
 
     for diction in list_transactions:

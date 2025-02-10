@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 
+
 def get_list_description_dict(list_dict: list[dict | dict], search_bar: str) -> list[dict]:
     """Функция принимает список словарей с данными
     о банковских операциях и строку поиска, и возвращает список словарей,
@@ -22,7 +23,7 @@ def get_list_description_dict(list_dict: list[dict | dict], search_bar: str) -> 
         return search_bar_dict
 
 
-def counter_categories(list_dict: list[dict | dict], list_categories: list[str]|str) -> dict:
+def counter_categories(list_dict: list[dict | dict], list_categories: list[str] | str) -> dict:
     """
     Функция принимает список словарей с данными о банковских операциях и список категорий операций,
     и возвращает словарь, в котором ключи — это названия категорий,

@@ -1,6 +1,3 @@
-from src.decorators import log
-
-
 def filter_by_state(state_dict: list[dict[str, object]], state: str = "EXECUTED") -> list[dict[str, object]]:
     """Функция возвращает список словарей по значению ключа "state" = EXECUTED"""
     filter_list = []

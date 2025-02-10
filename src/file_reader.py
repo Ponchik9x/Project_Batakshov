@@ -1,21 +1,21 @@
 import pandas as pd
 
 
-def read_file_csv(file_gate: str) -> list[dict[str, str]]:
+def read_file_csv(file_gate: str) -> list[dict | dict]:
     """Принимает на вход путь к файлу .csv и возвращает список словарей из файла"""
     return_list = []
     try:
-        with open(file_gate, newline='') as csv_file:
+        with open(file_gate, newline="") as csv_file:
             df = pd.read_csv(csv_file, delimiter=";")
             df = df.loc[df.id.notnull()]
-            return_list = df.to_dict('records')
+            return_list = df.to_dict("records")
             return return_list
 
     except ValueError:
         return return_list
 
 
-def read_file_exel(file_gate: str) -> list[dict[str, str]]:
+def read_file_exel(file_gate: str) -> list[dict | dict]:
     """Принимает на вход путь к файлу .exel и возвращает список словарей из файла"""
     returned_list = []
     try:
@@ -23,6 +23,6 @@ def read_file_exel(file_gate: str) -> list[dict[str, str]]:
         df = df.loc[df.id.notnull()]
         returned_list = df.to_dict(orient="records")
     except ValueError:
-        print('Неверный адрес')
+        print("Неверный адрес")
     finally:
         return returned_list
