@@ -9,29 +9,22 @@ logger.addHandler(file_handler)
 
 
 def get_mask_card_number(card_num: str) -> str:
-    """Функция показывает первые 6 цифр и последние 4 цифры в блоке по 4 цифры,
-    а остальные цифры заменяет на символ'*'"""
+    """
+    Функция принимает номер карты или счета и меняет необходимые цифры по примеру:
+    ДЛЯ КАРТ показывает первые 6 цифр и последние 4 цифры в блоке по 4 цифры,
+    а остальные цифры заменяет на символ'*'
+    ДЛЯ СЧЕТА заменяет все цифры символом '*' и возвращает последние 4 цифры
+    """
     logger.info(f"Получение значения карты: {card_num}")
 
-    if len(card_num) > 16 or len(card_num) < 16:
-        logger.error(f"Значения карты {card_num} меньше 16 цифр")
-        raise ValueError("неверный номер карты")
+    if len(card_num) == 16:
+        encrypted_value = f"{card_num[0:4]} {card_num[4:6]}** **** {card_num[-4:]}"
+        logger.info(f"Вывод зашифрованного значения карты: {encrypted_value}")
+    elif len(card_num) == 20:
+        encrypted_value = f"**{card_num[-4:]}"
+        logger.info(f"Вывод зашифрованного значения счета: {encrypted_value}")
+    else:
+        logger.error(f"Значения карты {card_num} не соответствует параметрам 16/20 цифр")
+        raise ValueError("неверный номер карты/счета")
 
-    encrypted_card = f"{card_num[0:4]} {card_num[4:6]}** **** {card_num[-4:]}"
-    logger.info(f"Вывод зашифрованного значения карты: {encrypted_card}")
-
-    return encrypted_card
-
-
-def get_mask_account(card_num: str) -> str:
-    """ "Функция заменяет все цифры символом '*' и возвращает последние 4 цифры"""
-    logger.info(f"Получение значения счета: {card_num}")
-
-    if len(card_num) > 20 or len(card_num) < 20:
-        logger.error(f"Значения карты {card_num} меньше 20 цифр")
-        raise ValueError("неверный номер карты")
-
-    encrypted_account = f"**{card_num[-4:]}"
-    logger.info(f"Вывод зашифрованного значения карты: {encrypted_account}")
-
-    return encrypted_account
+    return encrypted_value

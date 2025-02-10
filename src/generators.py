@@ -1,24 +1,23 @@
 from typing import Any, Generator
 
 
-def filter_by_currency(
-    list_of_transactions: list[dict[str | int, dict[str, dict[Any, Any]]]], currency: str
-) -> Generator[dict[str | int, dict[str, dict[Any, Any]]], Any, None]:
-    """Функция filter_by_currency возвращает итератор, который поочередно выдает транзакции, где валюта операции
-    соответствует заданной"""
+def filter_by_currency(list_of_transactions: list[dict | dict], currency: str) -> Generator[dict, Any, None]:
+    """Функция filter_by_currency возвращает итератор, который поочередно выдает транзакции,
+    где валюта операции соответствует заданной"""
     if len(list_of_transactions) == 0 or len(currency) == 0:
         raise ValueError("Проверьте данные на входе")
-    for v in list_of_transactions:
-        if v["operationAmount"]["currency"]["code"] == currency:
-            dict_of_currency = (
-                item for item in list_of_transactions if item["operationAmount"]["currency"]["code"] == currency
-            )
-            return dict_of_currency
-        else:
-            raise ValueError("Операции с такой валютой не производились или указана неверная валюта")
+    else:
+        for v in list_of_transactions:
+            if v["operationAmount"]["currency"]["code"] == currency:
+                dict_of_currency: Generator[dict, Any, None] = (
+                    item for item in list_of_transactions if item["operationAmount"]["currency"]["code"] == currency
+                )
+                return dict_of_currency
+            else:
+                raise ValueError("Операции с такой валютой не производились или указана неверная валюта")
 
 
-def transaction_descriptions(list_of_transactions):
+def transaction_descriptions(list_of_transactions: list[dict | dict]) -> Generator:
     """
     Функция transaction_descriptions принимает список словарей с транзакциями и возвращает
     описание каждой операции по очереди
@@ -31,7 +30,7 @@ def transaction_descriptions(list_of_transactions):
             yield string_descriptions
 
 
-def card_number_generator(start, stop):
+def card_number_generator(start: int, stop: int) -> Generator:
     """Функция-генератор card_number_generator выдает номера банковских карт в формате XXXX XXXX XXXX XXXX
     X — цифра номера карты, диапазон от 0000 0000 0000 0001 до 9999 9999 9999 9999"""
     if stop >= 10000000000000000 or stop <= 0:
