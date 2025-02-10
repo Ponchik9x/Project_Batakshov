@@ -4,8 +4,8 @@ from typing import Any, Generator
 def filter_by_currency(
     list_of_transactions: list[dict[str | int, dict[str, dict[Any, Any]]]], currency: str
 ) -> Generator[dict[str | int, dict[str, dict[Any, Any]]], Any, None]:
-    """Функция filter_by_currency возвращает итератор, который поочередно выдает транзакции, где валюта операции
-    соответствует заданной"""
+    """Функция filter_by_currency возвращает итератор, который поочередно выдает транзакции,
+    где валюта операции соответствует заданной"""
     if len(list_of_transactions) == 0 or len(currency) == 0:
         raise ValueError("Проверьте данные на входе")
     for v in list_of_transactions:
